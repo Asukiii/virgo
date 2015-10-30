@@ -25,7 +25,7 @@ extern __stdcall void RtlMoveMemory(void *, void *, size_t);
 #define MOD_NOREPEAT 0x4000
 #endif
 
-#define NUM_DESKTOPS 4
+#define NUM_DESKTOPS 5
 
 typedef struct {
 	HWND *windows;
@@ -195,7 +195,7 @@ static int is_valid_window(HWND hwnd)
 static void register_hotkey(int id, int mod, int vk)
 {
 	if(!RegisterHotKey(NULL, id, mod, vk)) {
-		MessageBox(NULL, "could not register hotkey", "error",
+		MessageBox(NULL, "无法注册键盘快捷键", "error",
 			MB_ICONEXCLAMATION);
 		ExitProcess(1);
 	}
@@ -252,8 +252,8 @@ static void virgo_toggle_hotkeys(Virgo *v)
 	v->handle_hotkeys = !v->handle_hotkeys;
 	if(v->handle_hotkeys) {
 		for(i=0; i<NUM_DESKTOPS; i++) {
-			register_hotkey(i*2, MOD_ALT|MOD_NOREPEAT, i+1+0x30);
-			register_hotkey(i*2+1, MOD_CONTROL|MOD_NOREPEAT, i+1+0x30);
+			register_hotkey(i*2, MOD_CONTROL|MOD_SHIFT|MOD_NOREPEAT, i+1+0x30);
+			register_hotkey(i*2+1, MOD_CONTROL|MOD_ALT|MOD_NOREPEAT, i+1+0x30);
 		}
 	} else {
 		for(i=0; i<NUM_DESKTOPS; i++) {
@@ -268,8 +268,8 @@ static void virgo_init(Virgo *v)
 	int i;
 	v->handle_hotkeys = 1;
 	for(i=0; i<NUM_DESKTOPS; i++) {
-		register_hotkey(i*2, MOD_ALT|MOD_NOREPEAT, i+1+0x30);
-		register_hotkey(i*2+1, MOD_CONTROL|MOD_NOREPEAT, i+1+0x30);
+		register_hotkey(i*2, MOD_CONTROL|MOD_SHIFT|MOD_NOREPEAT, i+1+0x30);
+		register_hotkey(i*2+1, MOD_CONTROL|MOD_ALT|MOD_NOREPEAT, i+1+0x30);
 	}
 	register_hotkey(i*2, MOD_ALT|MOD_CONTROL|MOD_SHIFT|MOD_NOREPEAT, 'Q');
 	register_hotkey(i*2+1, MOD_ALT|MOD_CONTROL|MOD_SHIFT|MOD_NOREPEAT, 'S');
